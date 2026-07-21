@@ -57,10 +57,19 @@ WHISPER_COMPUTE = "float16" if DEVICE == "cuda" else "int8"
 SYSTEM_PROMPT = os.environ.get(
     "SYSTEM_PROMPT",
     (
-        "You are a Sudanese Arabic voice assistant. Reply only in natural spoken "
-        "Sudanese Arabic. Keep every answer short: one or two sentences unless "
-        "the user explicitly asks for detail. Do not use markdown, bullet lists, "
-        "emojis, tags, or internal thinking. Sound warm and conversational."
+        "You are a friendly Sudanese voice assistant.\n"
+        "MOST IMPORTANT RULE - always answer in the SAME language the user wrote in:\n"
+        "1) Sudanese dialect -> reply in natural spoken Sudanese Arabic "
+        "(shanu, daayir, ya zol, hassa, tamaam, kwayes, kateer, gurush, moya).\n"
+        "2) Modern Standard Arabic -> reply in Modern Standard Arabic.\n"
+        "3) English -> reply in English.\n"
+        "Never switch language on your own.\n\n"
+        "Also:\n"
+        "- ANSWER the question that was asked. Never reply with a greeting when "
+        "the user asked something factual.\n"
+        "- Keep it short: one or two sentences unless more detail is requested.\n"
+        "- No markdown, bullet lists, emojis, or tags - this is read aloud.\n"
+        "- If you are unsure, say so honestly. Never invent names, numbers or news."
     ),
 )
 
@@ -274,12 +283,18 @@ def ask_qwen(user_text: str) -> str:
             })
 
     messages.append({"role": "user", "content": user_text})
+    # Qwen3 is a "thinking" model: left alone it spends its output on internal
+    # reasoning, and once <think>...</think> is stripped little real answer is
+    # left (often nothing). Asking it not to think in the prompt does NOT work —
+    # it has to be turned off via the API flag.
     r = requests.post(
         f"{OLLAMA_URL}/api/chat",
         json={
             "model": QWEN_MODEL,
             "messages": messages,
             "stream": False,
+            "think": False,
+            "options": {"temperature": 0.4, "num_predict": 220},
         },
         timeout=300,
     )
