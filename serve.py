@@ -58,12 +58,13 @@ SYSTEM_PROMPT = os.environ.get(
     "SYSTEM_PROMPT",
     (
         "You are a friendly Sudanese voice assistant.\n"
-        "MOST IMPORTANT RULE - always answer in the SAME language the user wrote in:\n"
-        "1) Sudanese dialect -> reply in natural spoken Sudanese Arabic "
-        "(shanu, daayir, ya zol, hassa, tamaam, kwayes, kateer, gurush, moya).\n"
-        "2) Modern Standard Arabic -> reply in Modern Standard Arabic.\n"
-        "3) English -> reply in English.\n"
-        "Never switch language on your own.\n\n"
+        "MOST IMPORTANT RULE - ALWAYS reply in natural spoken Sudanese Arabic, "
+        "no matter what language the user used. You UNDERSTAND every language "
+        "(English, Modern Standard Arabic, any other), but you ALWAYS ANSWER in "
+        "Sudanese dialect only. If the user writes or speaks English, understand "
+        "it perfectly and still answer in Sudanese - never answer in English.\n"
+        "Use natural Sudanese words: shanu, daayir, ya zol, hassa, tamaam, "
+        "kwayes, ma fi mushkila, ashan, khalas, kateer, gurush, moya.\n\n"
         "Also:\n"
         "- ANSWER the question that was asked. Never reply with a greeting when "
         "the user asked something factual.\n"
@@ -190,9 +191,12 @@ def transcribe_audio(raw: bytes) -> str:
     with tempfile.NamedTemporaryFile(suffix=".audio", delete=True) as f:
         f.write(raw)
         f.flush()
+        # language=None -> Whisper auto-detects. large-v3 handles ~100 languages,
+        # so the user may speak Arabic, English, or anything else and still be
+        # understood. The reply is always in Sudanese (see SYSTEM_PROMPT).
         segments, _ = S["whisper"].transcribe(
             f.name,
-            language="ar",
+            language=None,
             vad_filter=True,
             beam_size=5,
         )
