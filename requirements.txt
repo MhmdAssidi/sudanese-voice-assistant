@@ -1,0 +1,13 @@
+# Backend (serve.py) — FastAPI voice assistant
+# Note: torch / TTS / faster-whisper need a GPU machine (they will not run
+# usefully on a laptop). The frontend in webui/ runs anywhere.
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+requests
+numpy
+soundfile
+torch
+faster-whisper
+TTS

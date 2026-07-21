@@ -1,0 +1,26 @@
+# --- secrets: NEVER commit ---
+.env
+*.pem
+*.key
+
+# --- python ---
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# --- node / frontend build ---
+node_modules/
+dist/
+*.log
+
+# --- benchmark deliverables (kept locally, not published) ---
+match_question_language/
+speed_cost_comparison/
+sudanese_dialect_only/
+
+# --- os / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

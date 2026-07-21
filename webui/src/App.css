@@ -1,0 +1,1351 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0f1531;
+  color: #f8fafc;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #0f1531;
+  overflow-x: hidden;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.ik-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 50% -8rem, rgba(48, 73, 166, 0.52), transparent 34rem),
+    linear-gradient(180deg, #12193a 0%, #0f1531 100%);
+  color: #f8fafc;
+}
+
+.browser-top {
+  height: auto;
+  display: grid;
+  grid-template-rows: auto;
+  justify-items: center;
+  padding: 13px 20px;
+  background: #f8f8fb;
+  color: #0a0d16;
+}
+
+.browser-status {
+  width: min(520px, calc(100vw - 56px));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 21px;
+  font-weight: 850;
+}
+
+.browser-muted {
+  width: 20px;
+  height: 20px;
+  margin-left: auto;
+  margin-right: 12px;
+  border-radius: 50%;
+  border: 3px solid #111827;
+  border-top-color: transparent;
+  transform: rotate(-28deg);
+  opacity: 0.72;
+}
+
+.browser-status b {
+  margin-right: 8px;
+}
+
+.browser-status em {
+  min-width: 34px;
+  height: 22px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(90deg, #ef4444 0 38%, #a3a3a3 38%);
+  color: #fff;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 1;
+}
+
+.address-pill {
+  align-self: end;
+  min-width: min(340px, calc(100vw - 72px));
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  background: #e6e6ee;
+  color: #202332;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 850;
+  box-shadow: inset 0 0 0 1px #cfd0da;
+}
+
+.demo-stage {
+  width: min(920px, 100%);
+  margin: 0 auto;
+  padding: 40px 18px 44px;
+}
+
+.mode-tabs {
+  min-height: 86px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 12px 24px;
+  margin-bottom: 16px;
+}
+
+.mode-tabs button {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.mode-tabs button.active {
+  background: #ffaf21;
+  color: #0e1730;
+  box-shadow: 0 16px 34px rgba(255, 175, 33, 0.25);
+}
+
+.phone-shell {
+  width: min(390px, calc(100vw - 38px));
+  height: 760px;
+  margin: 0 auto;
+  padding: 7px;
+  border-radius: 58px;
+  border: 6px solid #283541;
+  background: #05070d;
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.36);
+}
+
+.app-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 46px;
+}
+
+.blue-screen {
+  background: linear-gradient(180deg, #2467f4 0%, #224ad2 100%);
+}
+
+.dark-screen,
+.ussd-screen,
+.voice-screen,
+.web-screen {
+  background:
+    radial-gradient(circle at 50% -6rem, rgba(39, 48, 91, 0.68), transparent 20rem),
+    #080d25;
+}
+
+.phone-status {
+  height: 64px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 14px 42px 0;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.phone-status strong,
+.status-icons {
+  white-space: nowrap;
+}
+
+.phone-island {
+  width: 112px;
+  height: 34px;
+  border-radius: 999px;
+  background: #000;
+}
+
+.status-icons {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.cell-bars {
+  height: 16px;
+  display: inline-flex;
+  align-items: end;
+  gap: 2px;
+}
+
+.cell-bars i {
+  width: 4px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.cell-bars i:nth-child(1) {
+  height: 7px;
+}
+
+.cell-bars i:nth-child(2) {
+  height: 11px;
+}
+
+.cell-bars i:nth-child(3) {
+  height: 15px;
+}
+
+.status-wifi {
+  width: 16px;
+  height: 12px;
+  border: 3px solid currentColor;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  transform: rotate(-45deg);
+}
+
+.status-battery {
+  width: 20px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  position: relative;
+}
+
+.status-battery::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  top: 3px;
+  width: 2px;
+  height: 4px;
+  border-radius: 0 2px 2px 0;
+  background: currentColor;
+}
+
+.logo-mark {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #ffaf21;
+  color: #0d1328;
+  font-size: 25px;
+  font-weight: 950;
+  letter-spacing: -2px;
+}
+
+.logo-mark.small {
+  width: 56px;
+  height: 56px;
+  font-size: 24px;
+  flex: 0 0 auto;
+}
+
+.home-hero {
+  display: grid;
+  justify-items: center;
+  margin-top: 22px;
+}
+
+.home-hero h1 {
+  margin: 18px 0 0;
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.home-hero p {
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 17px;
+  font-weight: 850;
+}
+
+.intro-card {
+  width: calc(100% - 64px);
+  margin: 42px auto 0;
+  padding: 22px 24px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  text-align: left;
+  font-size: 19px;
+  line-height: 1.5;
+  font-weight: 780;
+}
+
+.prompt-list {
+  width: calc(100% - 64px);
+  margin: 30px auto 0;
+  display: grid;
+  gap: 13px;
+  justify-items: start;
+}
+
+.prompt-list button {
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 175, 33, 0.5);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffaf21;
+  font-size: 17px;
+  font-weight: 850;
+}
+
+.chat-header {
+  height: 114px;
+  padding: 28px 24px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.chat-title {
+  min-width: 0;
+  flex: 1;
+}
+
+.chat-title h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 24px;
+  line-height: 1.05;
+  font-weight: 900;
+}
+
+.chat-title p {
+  margin: 8px 0 0;
+  color: #20e77f;
+  font-size: 16px;
+  font-weight: 850;
+}
+
+.chat-title p span {
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  display: inline-block;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.chat-header button {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.day-label {
+  margin: 24px 0 16px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.28);
+  font-size: 17px;
+  font-weight: 850;
+}
+
+.messages {
+  height: calc(100% - 250px);
+  padding: 0 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.messages::-webkit-scrollbar {
+  display: none;
+}
+
+.bubble {
+  max-width: 84%;
+  padding: 16px 17px 13px;
+  border-radius: 19px;
+  color: #eef4ff;
+  font-size: 16px;
+  line-height: 1.45;
+  font-weight: 720;
+}
+
+.bubble.assistant {
+  align-self: flex-start;
+  background: #1e456b;
+}
+
+.bubble.user {
+  align-self: flex-end;
+  background: #3459d6;
+}
+
+.bubble p {
+  margin: 0;
+}
+
+.bubble span {
+  display: block;
+  margin-top: 12px;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 13px;
+}
+
+.prompt-bar {
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  bottom: 26px;
+  height: 60px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.dark-screen .prompt-bar,
+.web-screen .prompt-bar {
+  background: rgba(34, 41, 84, 0.82);
+}
+
+.prompt-bar input {
+  min-width: 0;
+  flex: 1;
+  height: 44px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 760;
+}
+
+.prompt-bar input::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.prompt-bar button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.prompt-bar button[type="submit"],
+.prompt-bar button.recording {
+  background: #2f7650;
+  color: #eafff2;
+}
+
+.ussd-top {
+  margin-top: 22px;
+  text-align: center;
+}
+
+.ussd-top p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.26);
+  font-size: 18px;
+  font-weight: 850;
+}
+
+.ussd-top strong {
+  display: block;
+  margin-top: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-size: 39px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.ussd-card {
+  width: calc(100% - 52px);
+  margin: 56px auto 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 20px;
+  background: #30302f;
+  color: #f8fafc;
+}
+
+.ussd-card h3 {
+  margin: 25px 24px 0;
+  color: #bdbdbd;
+  font-size: 18px;
+  letter-spacing: 3px;
+}
+
+.ussd-card p {
+  margin: 24px 24px 20px;
+  font-size: 20px;
+  font-weight: 850;
+}
+
+.ussd-card ol {
+  margin: 0 24px 22px;
+  padding-left: 22px;
+  font-size: 19px;
+  line-height: 1.55;
+  font-weight: 800;
+}
+
+.ussd-card input {
+  display: block;
+  width: calc(100% - 48px);
+  height: 58px;
+  margin: 0 auto 20px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 13px;
+  outline: 0;
+  background: rgba(255, 255, 255, 0.09);
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 850;
+}
+
+.ussd-card input::placeholder {
+  color: rgba(255, 255, 255, 0.34);
+}
+
+.ussd-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.ussd-actions button {
+  height: 64px;
+  background: transparent;
+  color: #4c9aff;
+  font-size: 20px;
+  font-weight: 850;
+}
+
+.ussd-actions button + button {
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.keypad {
+  width: calc(100% - 88px);
+  margin: 52px auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px 16px;
+  direction: ltr;
+}
+
+.keypad button {
+  aspect-ratio: 1.08;
+  border-radius: 30px;
+  background: #282f4d;
+  color: #fff;
+  font-size: 29px;
+  font-weight: 520;
+}
+
+.call-button {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #12d869 0%, #05b54d 100%);
+  color: #fff;
+  box-shadow:
+    0 12px 24px rgba(7, 206, 89, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+.voice-panel {
+  padding: 20px 28px 0;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.voice-panel h1 {
+  margin: 18px 0 0;
+  color: #fff;
+  font-size: 36px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.voice-panel p {
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 18px;
+  font-weight: 850;
+}
+
+.voice-orb {
+  width: 106px;
+  height: 106px;
+  margin-top: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #ffaf21;
+  color: #0f1531;
+  box-shadow:
+    0 0 0 18px rgba(255, 175, 33, 0.08),
+    0 0 0 36px rgba(255, 175, 33, 0.04),
+    0 26px 56px rgba(255, 175, 33, 0.22);
+}
+
+.voice-orb.recording {
+  background: #ef4444;
+  color: #fff;
+  animation: pulse 1.25s infinite;
+}
+
+.voice-wave {
+  height: 36px;
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.voice-wave i {
+  width: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.36);
+}
+
+.voice-wave i:nth-child(1),
+.voice-wave i:nth-child(5) {
+  height: 14px;
+}
+
+.voice-wave i:nth-child(2),
+.voice-wave i:nth-child(4) {
+  height: 25px;
+}
+
+.voice-wave i:nth-child(3) {
+  height: 36px;
+}
+
+.voice-result {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 18px;
+  display: grid;
+  gap: 8px;
+}
+
+.voice-result div {
+  min-height: 54px;
+  padding: 9px 13px;
+  border-radius: 18px;
+  background: rgba(31, 69, 107, 0.72);
+  text-align: left;
+}
+
+.voice-result .recording-preview {
+  min-height: 58px;
+}
+
+.voice-result span {
+  display: block;
+  margin-bottom: 4px;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 12px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.voice-result p {
+  max-height: 34px;
+  margin: 0;
+  overflow: hidden;
+  color: #f8fafc;
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 720;
+}
+
+.voice-result audio {
+  display: block;
+  width: 100%;
+  height: 24px;
+  margin-top: 2px;
+}
+
+.voice-result small {
+  display: block;
+  padding: 0 2px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: center;
+  font-weight: 700;
+}
+
+.web-panel {
+  padding: 52px 30px 0;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.web-panel h1 {
+  margin: 22px 0 0;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 900;
+}
+
+.web-panel p {
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 17px;
+  font-weight: 820;
+}
+
+.web-messages {
+  height: calc(100% - 310px);
+  margin-top: 30px;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  z-index: 30;
+  max-width: min(560px, calc(100vw - 32px));
+  transform: translateX(-50%);
+  padding: 13px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #111827;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 780;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.36);
+}
+
+.icon {
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  color: currentColor;
+}
+
+.icon-phone {
+  width: 16px;
+  height: 26px;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+}
+
+.icon-phone::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translateX(-50%);
+}
+
+.icon-hash::before {
+  content: "#";
+  font-size: 31px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.icon-chat {
+  width: 25px;
+  height: 21px;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+}
+
+.icon-chat::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  bottom: -7px;
+  width: 9px;
+  height: 9px;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: skewY(-35deg);
+}
+
+.icon-call {
+  width: 27px;
+  height: 27px;
+  border: 4px solid currentColor;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-radius: 50%;
+  transform: rotate(-45deg);
+}
+
+.icon-globe {
+  width: 28px;
+  height: 28px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.icon-globe::before,
+.icon-globe::after {
+  content: "";
+  position: absolute;
+  inset: 4px 9px;
+  border-left: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.icon-globe::after {
+  inset: 12px 2px;
+  border: 0;
+  border-top: 2px solid currentColor;
+}
+
+.icon-send {
+  width: 22px;
+  height: 22px;
+  border: 3px solid currentColor;
+  border-left: 0;
+  border-bottom: 0;
+  transform: rotate(45deg);
+}
+
+.icon-send::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 8px;
+  width: 25px;
+  height: 3px;
+  background: currentColor;
+  transform: rotate(-45deg);
+  transform-origin: right center;
+}
+
+.icon-mic {
+  width: 17px;
+  height: 28px;
+  border: 3px solid currentColor;
+  border-radius: 999px;
+}
+
+.icon-mic::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -11px;
+  width: 31px;
+  height: 21px;
+  border: 3px solid currentColor;
+  border-top: 0;
+  border-radius: 0 0 999px 999px;
+  transform: translateX(-50%);
+}
+
+.icon-mic::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -22px;
+  width: 3px;
+  height: 11px;
+  background: currentColor;
+  transform: translateX(-50%);
+}
+
+.icon-clip {
+  width: 15px;
+  height: 27px;
+  border: 3px solid currentColor;
+  border-radius: 999px;
+  transform: rotate(35deg);
+}
+
+.icon-clip::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+}
+
+.icon-more {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 -9px 0 currentColor, 0 9px 0 currentColor;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 18px rgba(239, 68, 68, 0.1),
+      0 0 0 36px rgba(239, 68, 68, 0.04),
+      0 26px 56px rgba(239, 68, 68, 0.28);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 26px rgba(239, 68, 68, 0.05),
+      0 0 0 48px rgba(239, 68, 68, 0.02),
+      0 26px 56px rgba(239, 68, 68, 0.36);
+  }
+}
+
+@media (max-height: 900px) {
+  .browser-top {
+    height: auto;
+    padding: 11px 20px;
+  }
+
+  .browser-status {
+    font-size: 18px;
+  }
+
+  .address-pill {
+    padding: 10px 20px;
+    font-size: 17px;
+  }
+
+  .demo-stage {
+    padding-top: 24px;
+  }
+
+  .mode-tabs {
+    min-height: 74px;
+    margin-bottom: 10px;
+  }
+
+  .mode-tabs button {
+    min-height: 40px;
+    padding: 0 18px;
+    font-size: 17px;
+  }
+
+  .phone-shell {
+    height: 650px;
+    width: min(360px, calc(100vw - 38px));
+    border-radius: 50px;
+  }
+
+  .app-screen {
+    border-radius: 40px;
+  }
+
+  .home-hero {
+    margin-top: 4px;
+  }
+
+  .intro-card {
+    margin-top: 34px;
+    padding: 18px 22px;
+    font-size: 17px;
+  }
+
+  .prompt-list {
+    margin-top: 22px;
+    gap: 10px;
+  }
+
+  .prompt-list button {
+    min-height: 40px;
+    font-size: 15px;
+  }
+
+  .voice-panel {
+    padding-top: 14px;
+  }
+
+  .voice-orb {
+    width: 96px;
+    height: 96px;
+    margin-top: 22px;
+  }
+
+  .voice-result div {
+    min-height: 50px;
+  }
+
+  .keypad {
+    margin-top: 56px;
+    gap: 12px 14px;
+  }
+
+  .call-button {
+    width: 70px;
+    height: 70px;
+    bottom: 30px;
+  }
+}
+
+@media (max-width: 520px) {
+  .browser-top {
+    height: auto;
+  }
+
+  .demo-stage {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .mode-tabs {
+    min-height: 88px;
+    gap: 10px 12px;
+  }
+
+  .mode-tabs button {
+    padding: 0 15px;
+    font-size: 16px;
+  }
+
+  .phone-shell {
+    width: min(370px, calc(100vw - 28px));
+  }
+}
+
+/* =========================================================================
+   UI POLISH PASS — refinement only: motion, depth, focus, crisper type.
+   The color palette and all button colors/shapes are intentionally
+   unchanged. This block only ADDS feedback/depth; remove it to revert.
+   ========================================================================= */
+
+/* Crisper text rendering across the app */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Smooth, consistent feedback on every control (color & shape unchanged) */
+.mode-tabs button,
+.prompt-list button,
+.keypad button,
+.ussd-actions button,
+.chat-header button,
+.prompt-bar button,
+.voice-orb,
+.call-button {
+  transition:
+    transform 0.16s ease,
+    filter 0.18s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+.prompt-bar,
+.ussd-card input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+/* Hover: a gentle lift / brighten — same colors */
+@media (hover: hover) {
+  .mode-tabs button:not(.active):hover {
+    color: rgba(255, 255, 255, 0.82);
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .mode-tabs button.active:hover,
+  .prompt-bar button[type="submit"]:hover,
+  .prompt-bar button.recording:hover,
+  .voice-orb:hover,
+  .call-button:hover {
+    filter: brightness(1.06);
+  }
+  .prompt-list button:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 175, 33, 0.75);
+  }
+  .keypad button:hover {
+    background: #313a5f;
+  }
+  .ussd-actions button:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .chat-header button:hover,
+  .prompt-bar button:hover {
+    color: rgba(255, 255, 255, 0.9);
+  }
+}
+
+/* Press: subtle tactile push */
+.mode-tabs button:active,
+.prompt-list button:active,
+.keypad button:active,
+.ussd-actions button:active,
+.chat-header button:active,
+.prompt-bar button:active,
+.voice-orb:active {
+  transform: scale(0.955);
+}
+/* call-button keeps its centering transform */
+.call-button:active {
+  transform: translateX(-50%) scale(0.955);
+}
+.mode-tabs button:disabled:active,
+.prompt-bar button:disabled:active,
+.voice-orb:disabled:active {
+  transform: none;
+}
+
+/* Accessible keyboard focus ring (was fully suppressed before) */
+.mode-tabs button:focus-visible,
+.prompt-list button:focus-visible,
+.keypad button:focus-visible,
+.ussd-actions button:focus-visible,
+.chat-header button:focus-visible,
+.prompt-bar button:focus-visible,
+.voice-orb:focus-visible,
+.call-button:focus-visible {
+  outline: 2px solid rgba(255, 175, 33, 0.9);
+  outline-offset: 3px;
+}
+
+/* Text fields get a clear focus state instead of a dead outline */
+.prompt-bar:focus-within {
+  border-color: rgba(255, 175, 33, 0.5);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 0 0 3px rgba(255, 175, 33, 0.12),
+    0 10px 26px rgba(0, 0, 0, 0.24);
+}
+.ussd-card input:focus {
+  border-color: rgba(255, 175, 33, 0.6);
+  background: rgba(255, 255, 255, 0.13);
+}
+
+/* Consistent soft depth so cards & the prompt bar read as layered surfaces */
+.prompt-bar {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 10px 26px rgba(0, 0, 0, 0.24);
+}
+.intro-card {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+.ussd-card {
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+}
+.voice-result div {
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+}
+
+/* Messaging bubbles: subtle depth + a squared "tail" corner + gentle entrance */
+.bubble {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+  animation: bubble-in 0.24s ease both;
+}
+.bubble.assistant {
+  border-bottom-left-radius: 7px;
+}
+.bubble.user {
+  border-bottom-right-radius: 7px;
+}
+@keyframes bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Each screen fades in cleanly when you switch tabs */
+.app-screen {
+  animation: screen-in 0.28s ease both;
+}
+@keyframes screen-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Honor users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* =========================================================================
+   UI POLISH PASS 2 — a livelier, more real chat feel.
+   Still additive; palette and button colors/shapes unchanged.
+   ========================================================================= */
+
+/* Subtle negative tracking on big bold headings reads more premium */
+.home-hero h1,
+.voice-panel h1,
+.web-panel h1 {
+  letter-spacing: -0.6px;
+}
+.chat-title h2 {
+  letter-spacing: -0.3px;
+}
+
+/* "Live" pulse radiating from the online status dot */
+.chat-title p span {
+  animation: status-pulse 2.4s ease-in-out infinite;
+}
+@keyframes status-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(32, 231, 127, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(32, 231, 127, 0);
+  }
+}
+
+/* Soften the top edge so bubbles dissolve as they scroll up under the header */
+.messages {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16px);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 16px);
+}
+
+/* Typing indicator — shown while the assistant is thinking */
+.bubble.typing {
+  width: fit-content;
+  padding: 17px 18px;
+}
+.typing-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.typing-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.62);
+  animation: typing-bounce 1.2s ease-in-out infinite;
+}
+.typing-dots i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.typing-dots i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes typing-bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+/* =========================================================================
+   CRISP SVG ICONS — replaces the old CSS-drawn glyphs so every button
+   reads cleanly and consistently. Colors inherit (currentColor); the
+   button colors and pill shapes are unchanged.
+   ========================================================================= */
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+.icon svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+/* Larger icons where the button is large */
+.voice-orb .icon svg {
+  width: 46px;
+  height: 46px;
+}
+.call-button .icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* Phone status-bar icons (signal / wifi / battery) as crisp SVGs */
+.status-icons .stat-ic {
+  display: block;
+  width: auto;
+  height: 12px;
+}
+.status-icons .stat-batt {
+  height: 11px;
+}
