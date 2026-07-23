@@ -30,7 +30,10 @@ WHISPER_ID = os.environ.get("WHISPER_ID", "large-v3")
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://127.0.0.1:11434")
 QWEN_MODEL = os.environ.get("QWEN_MODEL", "qwen3:32b")
 XTTS_ID = os.environ.get("XTTS_ID", "tts_models/multilingual/multi-dataset/xtts_v2")
-XTTS_REF = os.environ.get("XTTS_REF", "/workspace/sudan_voice_app/tts/ref.wav")
+# The reference voice this assistant speaks with. XTTS clones whoever is heard
+# in this clip, so this file IS the project's voice. Kept outside the repo
+# because it is a recording of a real person.
+XTTS_REF = os.environ.get("XTTS_REF", "/workspace/mhmd_voice/voice.wav")
 XTTS_LANG = os.environ.get("XTTS_LANG", "ar")
 XTTS_CHECKPOINT = os.environ.get("XTTS_CHECKPOINT", "").strip()
 XTTS_CONFIG = os.environ.get("XTTS_CONFIG", "").strip()
