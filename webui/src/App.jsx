@@ -591,14 +591,15 @@ export default function App() {
   }
 
   function renderVoice() {
-    const status = recording ? 'Listening' : busy ? 'Thinking' : 'Ready'
+    // Idle needs no label - only show a status while something is happening.
+    const status = recording ? 'Listening' : busy ? 'Thinking' : ''
     return (
       <div className="app-screen voice-screen">
         <PhoneStatus />
         <section className="voice-panel">
           <div className="logo-mark">iK</div>
           <h1>Voice AI</h1>
-          <p>{recording ? `${status} ${recordingSeconds}s` : status}</p>
+          {status && <p>{recording ? `${status} ${recordingSeconds}s` : status}</p>}
 
           <button
             className={`voice-orb ${recording ? 'recording' : ''}`}
