@@ -45,6 +45,10 @@ XTTS_SPEAKER_FILE = os.environ.get("XTTS_SPEAKER_FILE", "").strip()
 VOICE_NUM_PREDICT = int(os.environ.get("VOICE_NUM_PREDICT", "80"))
 WHISPER_BEAM = int(os.environ.get("WHISPER_BEAM", "1"))
 
+# Reply audio format: "opus" (~10x smaller, faster to deliver) or "wav".
+AUDIO_FORMAT = os.environ.get("AUDIO_FORMAT", "opus").strip().lower()
+AUDIO_MIME = "audio/ogg" if AUDIO_FORMAT == "opus" else "audio/wav"
+
 SERPER_API_KEY = os.environ.get("SERPER_API_KEY", "").strip()
 SERPER_URL = "https://google.serper.dev/search"
 
@@ -343,11 +347,26 @@ def synthesize(text: str) -> bytes:
             speaker_wav=XTTS_REF,
             language=XTTS_LANG,
         )
+    samples = np.asarray(wav, dtype=np.float32)
+
+    # Opus is ~10x smaller than WAV for speech, so the reply reaches the browser
+    # much faster (especially on mobile). Falls back to WAV if this build of
+    # libsndfile lacks Opus support, so audio never breaks.
+    if AUDIO_FORMAT == "opus":
+        try:
+            buf = io.BytesIO()
+            sf.write(buf, samples, S["tts_sr"], format="OGG", subtype="OPUS")
+            data = buf.getvalue()
+            log_stage("tts", f"generated {len(data)} opus bytes")
+            return data, "audio/ogg"
+        except Exception as e:  # noqa: BLE001 - never fail the reply over encoding
+            log_stage("tts", f"opus encode failed ({e}); falling back to WAV")
+
     buf = io.BytesIO()
-    sf.write(buf, np.asarray(wav, dtype=np.float32), S["tts_sr"], format="WAV")
+    sf.write(buf, samples, S["tts_sr"], format="WAV")
     data = buf.getvalue()
     log_stage("tts", f"generated {len(data)} wav bytes")
-    return data
+    return data, "audio/wav"
 
 
 @app.get("/health")
@@ -395,7 +414,8 @@ def speak(req: TextReq):
     if len(text) > MAX_TEXT:
         raise HTTPException(413, f"text too long (max {MAX_TEXT} chars)")
     try:
-        return Response(synthesize(text), media_type="audio/wav")
+        audio, mime = synthesize(text)
+        return Response(audio, media_type=mime)
     except Exception as e:
         log_exception("tts", e)
         raise HTTPException(502, f"XTTS error: {e}") from e
@@ -419,7 +439,7 @@ async def voice(file: UploadFile = File(...)):
         raise HTTPException(502, f"Qwen/Ollama error: {e}") from e
 
     try:
-        wav = synthesize(reply_text)
+        audio, mime = synthesize(reply_text)
     except Exception as e:
         log_exception("tts", e)
         raise HTTPException(502, f"XTTS error: {e}") from e
@@ -427,6 +447,8 @@ async def voice(file: UploadFile = File(...)):
         {
             "user_text": user_text,
             "reply_text": reply_text,
-            "audio_b64": base64.b64encode(wav).decode("ascii"),
+            "audio_b64": base64.b64encode(audio).decode("ascii"),
+            # The browser needs the real format to play it (opus or wav).
+            "audio_mime": mime,
         }
     )

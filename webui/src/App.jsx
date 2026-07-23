@@ -421,7 +421,9 @@ export default function App() {
         { role: 'assistant', text: replyText },
       ])
       if (audioRef.current) {
-        audioRef.current.src = `data:audio/wav;base64,${data.audio_b64}`
+        // The backend tells us the format (opus is ~10x smaller than wav).
+        const mime = data.audio_mime || 'audio/wav'
+        audioRef.current.src = `data:${mime};base64,${data.audio_b64}`
         audioRef.current.play().catch(() => {})
       }
     } catch (error) {
