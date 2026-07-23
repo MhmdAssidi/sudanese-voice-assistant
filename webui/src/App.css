@@ -1340,6 +1340,53 @@ body {
   height: 32px;
 }
 
+/* --- Voice screen: live feedback ------------------------------------- */
+
+/* The wave was five static bars, which read as a fake picture. Animate it
+   while recording (and gently while thinking) so it reflects real state. */
+.voice-wave i {
+  transition: height 0.2s ease, background-color 0.2s ease;
+}
+.voice-wave.active i {
+  background: #ffaf21;
+  animation: wave-bounce 0.9s ease-in-out infinite;
+}
+.voice-wave.active i:nth-child(1) { animation-delay: 0s; }
+.voice-wave.active i:nth-child(2) { animation-delay: 0.12s; }
+.voice-wave.active i:nth-child(3) { animation-delay: 0.24s; }
+.voice-wave.active i:nth-child(4) { animation-delay: 0.36s; }
+.voice-wave.active i:nth-child(5) { animation-delay: 0.48s; }
+
+@keyframes wave-bounce {
+  0%, 100% { transform: scaleY(0.35); }
+  50%      { transform: scaleY(1); }
+}
+
+/* While waiting for the reply, a calmer pulse */
+.voice-wave.thinking i {
+  animation: wave-thinking 1.4s ease-in-out infinite;
+}
+.voice-wave.thinking i:nth-child(2) { animation-delay: 0.15s; }
+.voice-wave.thinking i:nth-child(3) { animation-delay: 0.3s; }
+.voice-wave.thinking i:nth-child(4) { animation-delay: 0.45s; }
+.voice-wave.thinking i:nth-child(5) { animation-delay: 0.6s; }
+
+@keyframes wave-thinking {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 0.85; }
+}
+
+/* Friendly one-line hint under the mic (replaces the old debug readout) */
+.voice-hint {
+  margin: 16px 0 0;
+  max-width: 280px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 700;
+  text-align: center;
+}
+
 /* Phone status-bar icons (signal / wifi / battery) as crisp SVGs */
 .status-icons .stat-ic {
   display: block;

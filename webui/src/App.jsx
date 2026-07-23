@@ -227,7 +227,7 @@ export default function App() {
   ])
   const [lastVoice, setLastVoice] = useState({ user: '', reply: '' })
   const [lastRecordingUrl, setLastRecordingUrl] = useState('')
-  const [voiceDebug, setVoiceDebug] = useState('Tap the mic, speak for 4 seconds, then tap again.')
+  const [voiceHint, setVoiceHint] = useState('Tap the mic and speak, then tap again to send.')
   const [ussdCode, setUssdCode] = useState('*123#')
   const [ussdChoice, setUssdChoice] = useState('')
   const [notice, setNotice] = useState('')
@@ -367,7 +367,7 @@ export default function App() {
       recorder.onstop = submitVoice
       recorder.start(250)
       setRecordingStartedAt(Date.now())
-      setVoiceDebug(`Recording from ${stream.getAudioTracks()[0]?.label || 'microphone'}...`)
+      setVoiceHint("Listening... tap again when you're done.")
       setRecording(true)
     } catch (error) {
       showNotice(`Mic error: ${error.message}`)
@@ -396,12 +396,11 @@ export default function App() {
       if (browserBlob.size < 6000) {
         throw new Error('browser recorded almost no audio. Check Windows mic input or Chrome microphone device.')
       }
-      setVoiceDebug(`Captured ${Math.round(browserBlob.size / 1024)} KB in ${seconds.toFixed(1)}s. Converting to WAV...`)
+      setVoiceHint('Understanding what you said...')
       const wavBlob = await convertRecordingToWav(browserBlob)
       if (lastRecordingUrl) URL.revokeObjectURL(lastRecordingUrl)
       const recordingUrl = URL.createObjectURL(wavBlob)
       setLastRecordingUrl(recordingUrl)
-      setVoiceDebug(`Captured ${Math.round(browserBlob.size / 1024)} KB, converted to ${Math.round(wavBlob.size / 1024)} KB WAV. Sending to Whisper...`)
       const form = new FormData()
       form.append('file', wavBlob, 'recording.wav')
       const res = await fetch(`${API}/voice`, {
@@ -414,7 +413,7 @@ export default function App() {
       const userText = data.user_text || ''
       const replyText = data.reply_text || ''
       setLastVoice({ user: userText, reply: replyText })
-      setVoiceDebug(`Whisper heard ${userText.length} characters. Qwen reply is ready.`)
+      setVoiceHint('')
       setMessages((items) => [
         ...items,
         { role: 'user', text: userText },
@@ -427,7 +426,9 @@ export default function App() {
         audioRef.current.play().catch(() => {})
       }
     } catch (error) {
-      setVoiceDebug(`Failed: ${error.message}`)
+      // Keep the on-screen message human; the detail goes to the toast/console.
+      setVoiceHint("Sorry, that didn't work. Tap the mic and try again.")
+      showNotice(error.message)
     } finally {
       setBusy(false)
     }
@@ -599,27 +600,31 @@ export default function App() {
             <Icon name="mic" />
           </button>
 
-          <div className="voice-wave" aria-hidden="true">
+          <div
+            className={`voice-wave ${recording ? 'active' : ''} ${busy ? 'thinking' : ''}`}
+            aria-hidden="true"
+          >
             <i /><i /><i /><i /><i />
           </div>
+
+          {voiceHint && <p className="voice-hint">{voiceHint}</p>}
         </section>
 
         <section className="voice-result">
           {lastRecordingUrl && (
             <div className="recording-preview">
-              <span>Last browser recording</span>
+              <span>Your recording</span>
               <audio controls src={lastRecordingUrl} />
             </div>
           )}
           <div>
             <span>You said</span>
-            <p dir="auto">{lastVoice.user || 'Your transcript will appear here.'}</p>
+            <p dir="auto">{lastVoice.user || 'Your words will appear here.'}</p>
           </div>
           <div>
-            <span>Qwen replied</span>
+            <span>Assistant</span>
             <p dir="auto">{lastVoice.reply || 'The spoken reply will appear here.'}</p>
           </div>
-          <small>{voiceDebug}</small>
         </section>
       </div>
     )
