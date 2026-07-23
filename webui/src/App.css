@@ -177,7 +177,7 @@ button:disabled {
 .phone-status {
   height: 64px;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr auto;
   align-items: center;
   padding: 14px 42px 0;
   color: #fff;
@@ -188,13 +188,6 @@ button:disabled {
 .phone-status strong,
 .status-icons {
   white-space: nowrap;
-}
-
-.phone-island {
-  width: 112px;
-  height: 34px;
-  border-radius: 999px;
-  background: #000;
 }
 
 .status-icons {

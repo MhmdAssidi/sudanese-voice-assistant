@@ -97,7 +97,6 @@ function PhoneStatus({ light = false }) {
   return (
     <div className={`phone-status ${light ? 'light' : ''}`}>
       <strong>{timeLabel()}</strong>
-      <div className="phone-island" />
       <div className="status-icons">
         <svg className="stat-ic" viewBox="0 0 20 16" aria-hidden="true">
           <rect x="0" y="11" width="3.2" height="5" rx="1" fill="currentColor" />
