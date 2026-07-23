@@ -37,9 +37,22 @@ XTTS_REF = os.environ.get("XTTS_REF", "/workspace/mhmd_voice/voice.wav")
 
 # XTTS accepts several reference clips of the SAME speaker and averages them,
 # which gives a noticeably steadier voice than a single clip. Set XTTS_REFS to
-# a comma-separated list; otherwise we use the single reference above.
+# a comma-separated list, or just drop voice_extra*.wav next to the reference
+# and they are picked up automatically.
+def _default_refs():
+    refs = [XTTS_REF]
+    folder = os.path.dirname(XTTS_REF)
+    try:
+        for name in sorted(os.listdir(folder)):
+            if name.startswith("voice_extra") and name.endswith(".wav"):
+                refs.append(os.path.join(folder, name))
+    except OSError:
+        pass
+    return refs
+
+
 XTTS_REFS = [p.strip() for p in os.environ.get("XTTS_REFS", "").split(",") if p.strip()] \
-    or XTTS_REF
+    or _default_refs()
 
 
 def _f(name, default):
@@ -58,12 +71,15 @@ def _f(name, default):
 #   speed              - playback rate of the generated speech
 #   gpt_cond_len       - seconds of reference audio used to capture the voice
 #                        (longer = closer match, to a point)
+# These defaults were chosen by listening: the same sentences were generated
+# under five settings and compared side by side. This one (multiple reference
+# clips, slightly warmer sampling) sounded the most natural.
 XTTS_PARAMS = {
-    "temperature": _f("XTTS_TEMPERATURE", 0.70),
-    "repetition_penalty": _f("XTTS_REPETITION_PENALTY", 5.0),
+    "temperature": _f("XTTS_TEMPERATURE", 0.80),
+    "repetition_penalty": _f("XTTS_REPETITION_PENALTY", 4.0),
     "length_penalty": _f("XTTS_LENGTH_PENALTY", 1.0),
-    "top_k": int(_f("XTTS_TOP_K", 50)),
-    "top_p": _f("XTTS_TOP_P", 0.85),
+    "top_k": int(_f("XTTS_TOP_K", 60)),
+    "top_p": _f("XTTS_TOP_P", 0.90),
     "speed": _f("XTTS_SPEED", 1.0),
     "gpt_cond_len": int(_f("XTTS_COND_LEN", 10)),
     "enable_text_splitting": os.environ.get("XTTS_SPLIT", "1") != "0",
