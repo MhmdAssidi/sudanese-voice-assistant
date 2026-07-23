@@ -40,6 +40,11 @@ XTTS_SPEAKER_FILE = os.environ.get("XTTS_SPEAKER_FILE", "").strip()
 # Live web search via Serper.dev (a Google Search API). Optional: if
 # SERPER_API_KEY is unset, search is skipped and the assistant answers from the
 # model's own knowledge, exactly as before.
+# Spoken replies are capped shorter than typed ones: XTTS synthesis time grows
+# with text length, so a brief answer is both more natural and much faster.
+VOICE_NUM_PREDICT = int(os.environ.get("VOICE_NUM_PREDICT", "80"))
+WHISPER_BEAM = int(os.environ.get("WHISPER_BEAM", "1"))
+
 SERPER_API_KEY = os.environ.get("SERPER_API_KEY", "").strip()
 SERPER_URL = "https://google.serper.dev/search"
 
@@ -196,7 +201,7 @@ def transcribe_audio(raw: bytes) -> str:
             f.name,
             language=None,
             vad_filter=True,
-            beam_size=5,
+            beam_size=WHISPER_BEAM,
         )
         text = " ".join((s.text or "").strip() for s in segments).strip()
         log_stage("asr", f"transcribed {len(text)} chars")
@@ -265,9 +270,16 @@ def web_search(query: str) -> str:
     return "\n".join(lines)
 
 
-def ask_qwen(user_text: str) -> str:
+def ask_qwen(user_text: str, voice: bool = False) -> str:
+    """Ask the LLM. voice=True keeps the answer short: spoken replies should be
+    brief, and XTTS synthesis time scales with the length of the text."""
     log_stage("llm", f"asking {QWEN_MODEL} with {len(user_text)} chars")
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    if voice:
+        messages.append({
+            "role": "system",
+            "content": "دي محادثة صوتية: خلي الرد قصير جداً، جملة واحدة قصيرة بس.",
+        })
 
     # For "live" questions, search the web first and hand the results to the model.
     if needs_search(user_text):
@@ -289,6 +301,9 @@ def ask_qwen(user_text: str) -> str:
     # reasoning, and once <think>...</think> is stripped little real answer is
     # left (often nothing). Asking it not to think in the prompt does NOT work —
     # it has to be turned off via the API flag.
+    # keep_alive=-1 keeps the 20GB model resident in GPU memory. Without it
+    # Ollama unloads it after a few idle minutes and the next question pays a
+    # ~17s reload - measured as the single biggest source of latency.
     r = requests.post(
         f"{OLLAMA_URL}/api/chat",
         json={
@@ -296,7 +311,11 @@ def ask_qwen(user_text: str) -> str:
             "messages": messages,
             "stream": False,
             "think": False,
-            "options": {"temperature": 0.4, "num_predict": 220},
+            "keep_alive": -1,
+            "options": {
+                "temperature": 0.4,
+                "num_predict": VOICE_NUM_PREDICT if voice else 220,
+            },
         },
         timeout=300,
     )
@@ -394,7 +413,7 @@ async def voice(file: UploadFile = File(...)):
         raise HTTPException(400, "no speech detected")
 
     try:
-        reply_text = ask_qwen(user_text)
+        reply_text = ask_qwen(user_text, voice=True)
     except Exception as e:
         log_exception("llm", e)
         raise HTTPException(502, f"Qwen/Ollama error: {e}") from e
