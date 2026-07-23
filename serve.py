@@ -34,6 +34,40 @@ XTTS_ID = os.environ.get("XTTS_ID", "tts_models/multilingual/multi-dataset/xtts_
 # in this clip, so this file IS the project's voice. Kept outside the repo
 # because it is a recording of a real person.
 XTTS_REF = os.environ.get("XTTS_REF", "/workspace/mhmd_voice/voice.wav")
+
+# XTTS accepts several reference clips of the SAME speaker and averages them,
+# which gives a noticeably steadier voice than a single clip. Set XTTS_REFS to
+# a comma-separated list; otherwise we use the single reference above.
+XTTS_REFS = [p.strip() for p in os.environ.get("XTTS_REFS", "").split(",") if p.strip()] \
+    or XTTS_REF
+
+
+def _f(name, default):
+    """Read a float tuning knob from the environment."""
+    try:
+        return float(os.environ.get(name, default))
+    except (TypeError, ValueError):
+        return float(default)
+
+
+# Voice quality knobs. These shape how the speech is generated:
+#   temperature        - higher is more expressive, lower is more stable
+#   repetition_penalty - guards against stuttering / repeated syllables
+#   length_penalty     - <1 favours shorter, tighter delivery
+#   top_k / top_p      - how adventurous the sampling is
+#   speed              - playback rate of the generated speech
+#   gpt_cond_len       - seconds of reference audio used to capture the voice
+#                        (longer = closer match, to a point)
+XTTS_PARAMS = {
+    "temperature": _f("XTTS_TEMPERATURE", 0.70),
+    "repetition_penalty": _f("XTTS_REPETITION_PENALTY", 5.0),
+    "length_penalty": _f("XTTS_LENGTH_PENALTY", 1.0),
+    "top_k": int(_f("XTTS_TOP_K", 50)),
+    "top_p": _f("XTTS_TOP_P", 0.85),
+    "speed": _f("XTTS_SPEED", 1.0),
+    "gpt_cond_len": int(_f("XTTS_COND_LEN", 10)),
+    "enable_text_splitting": os.environ.get("XTTS_SPLIT", "1") != "0",
+}
 XTTS_LANG = os.environ.get("XTTS_LANG", "ar")
 XTTS_CHECKPOINT = os.environ.get("XTTS_CHECKPOINT", "").strip()
 XTTS_CONFIG = os.environ.get("XTTS_CONFIG", "").strip()
@@ -376,8 +410,9 @@ def synthesize(text: str) -> bytes:
     else:
         wav = S["tts"].tts(
             text=text,
-            speaker_wav=XTTS_REF,
+            speaker_wav=XTTS_REFS,
             language=XTTS_LANG,
+            **XTTS_PARAMS,
         )
     samples = np.asarray(wav, dtype=np.float32)
 
