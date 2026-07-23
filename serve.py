@@ -46,7 +46,9 @@ XTTS_SPEAKER_FILE = os.environ.get("XTTS_SPEAKER_FILE", "").strip()
 # Spoken replies are capped shorter than typed ones: XTTS synthesis time grows
 # with text length, so a brief answer is both more natural and much faster.
 VOICE_NUM_PREDICT = int(os.environ.get("VOICE_NUM_PREDICT", "80"))
-WHISPER_BEAM = int(os.environ.get("WHISPER_BEAM", "1"))
+# Whisper beam size. 1 is ~0.2s faster but noticeably less accurate on real
+# (noisy, quiet, re-recorded) audio, so accuracy wins here.
+WHISPER_BEAM = int(os.environ.get("WHISPER_BEAM", "5"))
 
 # Reply audio format: "opus" (~10x smaller, faster to deliver) or "wav".
 AUDIO_FORMAT = os.environ.get("AUDIO_FORMAT", "opus").strip().lower()
@@ -204,13 +206,40 @@ def transcribe_audio(raw: bytes) -> str:
         # language=None -> Whisper auto-detects. large-v3 handles ~100 languages,
         # so the user may speak Arabic, English, or anything else and still be
         # understood. The reply is always in Sudanese (see SYSTEM_PROMPT).
-        segments, _ = S["whisper"].transcribe(
-            f.name,
-            language=None,
-            vad_filter=True,
-            beam_size=WHISPER_BEAM,
-        )
-        text = " ".join((s.text or "").strip() for s in segments).strip()
+        #
+        # Real recordings (phone speaker into a laptop mic, noisy rooms) are much
+        # harder than clean audio: an aggressive VAD can cut most of the speech
+        # away, and language detection can misfire and produce gibberish. So we
+        # use a forgiving VAD, and if the result looks wrong we retry once,
+        # forced to Arabic with no VAD.
+        def run(language, use_vad):
+            segments, info = S["whisper"].transcribe(
+                f.name,
+                language=language,
+                vad_filter=use_vad,
+                vad_parameters={"min_silence_duration_ms": 700} if use_vad else None,
+                beam_size=WHISPER_BEAM,
+                condition_on_previous_text=False,
+            )
+            out = " ".join((s.text or "").strip() for s in segments).strip()
+            return out, info
+
+        text, info = run(None, True)
+        detected = getattr(info, "language", "?")
+        prob = getattr(info, "language_probability", 0.0) or 0.0
+        secs = getattr(info, "duration", 0.0) or 0.0
+        log_stage("asr", f"pass1: {len(text)} chars, lang={detected} ({prob:.2f}), {secs:.1f}s audio")
+
+        # Suspiciously little text for the length of audio, or a very unsure
+        # language guess, means the first pass probably failed.
+        too_short = secs > 3 and len(text) < max(12, int(secs * 2))
+        unsure = prob < 0.55
+        if too_short or unsure:
+            retry, info2 = run("ar", False)
+            log_stage("asr", f"pass2 (forced ar, no vad): {len(retry)} chars")
+            if len(retry) > len(text):
+                text = retry
+
         log_stage("asr", f"transcribed {len(text)} chars")
         return text
 
