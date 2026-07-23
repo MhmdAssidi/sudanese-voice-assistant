@@ -1397,21 +1397,43 @@ body {
   flex-direction: column;
 }
 
+/* The hero is decoration; the transcript is the content. Keep the hero
+   compact so the assistant's reply is visible without scrolling. */
 .voice-panel {
   flex: 0 0 auto;
-  padding-top: 10px;
+  padding-top: 6px;
+}
+.voice-panel .logo-mark {
+  width: 44px;
+  height: 44px;
+  font-size: 19px;
 }
 .voice-panel h1 {
-  margin-top: 12px;
-  font-size: 30px;
+  margin-top: 10px;
+  font-size: 25px;
 }
 .voice-panel p {
-  margin-top: 6px;
-  font-size: 16px;
+  margin-top: 4px;
+  font-size: 15px;
 }
 .voice-orb {
-  margin-top: 20px;
+  width: 88px;
+  height: 88px;
+  margin-top: 14px;
 }
+.voice-orb .icon svg {
+  width: 38px;
+  height: 38px;
+}
+.voice-wave {
+  height: 26px;
+  margin-top: 12px;
+}
+.voice-wave i:nth-child(1),
+.voice-wave i:nth-child(5) { height: 10px; }
+.voice-wave i:nth-child(2),
+.voice-wave i:nth-child(4) { height: 18px; }
+.voice-wave i:nth-child(3) { height: 26px; }
 
 .voice-result {
   position: static;          /* was absolute */
@@ -1423,14 +1445,16 @@ body {
   gap: 10px;
   overflow-y: auto;
   scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 12px);
-  mask-image: linear-gradient(to bottom, transparent 0, #000 12px);
 }
 .voice-result::-webkit-scrollbar {
   display: none;
 }
 
 .voice-result > div {
+  /* flex children shrink below their content by default, which made the
+     boxes overlap each other. Pin them to their natural height and let the
+     container scroll instead. */
+  flex: 0 0 auto;
   min-height: 0;             /* was a fixed 54px */
   padding: 12px 14px;
   border-radius: 16px;

@@ -238,6 +238,7 @@ export default function App() {
   const audioRef = useRef(null)
   const fileRef = useRef(null)
   const messagesRef = useRef(null)
+  const voiceResultRef = useRef(null)
 
   useEffect(() => {
     localStorage.setItem('voice_token', token)
@@ -262,6 +263,14 @@ export default function App() {
       el.scrollTop = el.scrollHeight
     }
   }, [messages, busy, tab])
+
+  // On the Voice screen the reply is what matters, so scroll it into view.
+  useEffect(() => {
+    const el = voiceResultRef.current
+    if (el) {
+      el.scrollTop = el.scrollHeight
+    }
+  }, [lastVoice, tab])
 
   const online = health?.status === 'ok'
   const modelLabel = <ModelName health={health} />
@@ -607,10 +616,12 @@ export default function App() {
             <i /><i /><i /><i /><i />
           </div>
 
-          {voiceHint && <p className="voice-hint">{voiceHint}</p>}
+          {/* Once there is a conversation the reply matters more than the hint,
+              so the hint only shows while it is still useful. */}
+          {voiceHint && !lastVoice.reply && <p className="voice-hint">{voiceHint}</p>}
         </section>
 
-        <section className="voice-result">
+        <section className="voice-result" ref={voiceResultRef}>
           {lastRecordingUrl && (
             <div className="recording-preview">
               <span>Your recording</span>
