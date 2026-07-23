@@ -24,3 +24,6 @@ sudanese_dialect_only/
 Thumbs.db
 .vscode/
 .idea/
+
+# reference voice audio (real speakers - never publish)
+voices/
