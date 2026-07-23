@@ -1378,13 +1378,85 @@ body {
 
 /* Friendly one-line hint under the mic (replaces the old debug readout) */
 .voice-hint {
-  margin: 16px 0 0;
+  margin: 14px 0 0;
   max-width: 280px;
   color: rgba(255, 255, 255, 0.5);
   font-size: 14px;
   line-height: 1.45;
   font-weight: 700;
   text-align: center;
+}
+
+/* --- Voice screen layout ---------------------------------------------
+   The transcript used to be absolutely positioned with a fixed 34px cap
+   and overflow:hidden, so any real answer was chopped off mid-sentence.
+   Lay the screen out as a column instead: the hero keeps its natural
+   height and the transcript takes the remaining space and scrolls. */
+.voice-screen {
+  display: flex;
+  flex-direction: column;
+}
+
+.voice-panel {
+  flex: 0 0 auto;
+  padding-top: 10px;
+}
+.voice-panel h1 {
+  margin-top: 12px;
+  font-size: 30px;
+}
+.voice-panel p {
+  margin-top: 6px;
+  font-size: 16px;
+}
+.voice-orb {
+  margin-top: 20px;
+}
+
+.voice-result {
+  position: static;          /* was absolute */
+  flex: 1 1 auto;
+  min-height: 0;             /* lets the flex child actually scroll */
+  margin: 16px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 12px);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 12px);
+}
+.voice-result::-webkit-scrollbar {
+  display: none;
+}
+
+.voice-result > div {
+  min-height: 0;             /* was a fixed 54px */
+  padding: 12px 14px;
+  border-radius: 16px;
+}
+
+/* Show the whole sentence, wrapped - no clipping */
+.voice-result p {
+  max-height: none;
+  overflow: visible;
+  font-size: 15px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.voice-result span {
+  margin-bottom: 6px;
+  font-size: 11px;
+  letter-spacing: 0.6px;
+}
+
+/* The native audio player is bulky; keep it compact and unobtrusive */
+.voice-result .recording-preview audio {
+  height: 32px;
+  margin-top: 6px;
+  filter: invert(0.92) hue-rotate(180deg);
+  opacity: 0.85;
 }
 
 /* Phone status-bar icons (signal / wifi / battery) as crisp SVGs */
